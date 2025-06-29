@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>카드 추천 사이트</title>
+  <style>
+    .dynamic-content {
+      margin-top: 20px;
+    }
+    .checkbox-group {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>카드 추천</h1>
+  <fieldset>
+    <h3>성별과 연령대 선택 후 검색 버튼을 눌러 주세요.</h3>
+    
+    성별 선택
+    <select id="sex">
+      <option value="M">남성</option>
+      <option value="F">여성</option>
+    </select><br>
+
+    연령 선택
+    <select id="age">
+      <option value="20s">20대</option>
+      <option value="30s">30대</option>
+      <option value="40s">40대</option>
+      <option value="50s">50대</option>
+      <option value="60s">60대</option>
+      <option value="70s">70대</option>
+      <option value="80s">80대</option>
+      <option value="90s">90대</option>
+    </select><br><br>
+
+    <input type="button" value="검색" onclick="showOptions()">
+
+    <div id="resultContainer" class="dynamic-content"></div>
+  </fieldset>
+
+  <script>
+    const subCategoryMap = {
+      "공연/전시": ["공연관람", "문화서비스", "전시장", "경기관람"],
+      "디저트": ["제과/제빵/떡/케익", "커피/음료"],
+      "생활서비스": ["미용서비스", "세탁/가사서비스", "연료판매", "차량관리/서비스", "보안/운송", "무점포서비스", "사우나/휴게시설", "수리서비스", "렌탈서비스", "교통서비스", "전문서비스", "여행/유학대행", "부동산"],
+      "소매/유통": ["건강/기호식품", "사무/교육용품", "서적/도서", "선물/완구", "스포츠/레져용품", "음/식료품소매", "의복/의류", "인테리어/가정용품", "종합소매점", "차량관리/부품", "악기/공예", "패션잡화", "화장품소매", "차량판매", "가전제품", "유아용품"],
+      "식사": ["고기요리", "닭/오리요리", "별식/퓨전요리", "부페", "분식", "양식", "일식/수산물", "중식", "패스트푸드", "한식", "휴게소/대형업체"],
+      "여가/오락": ["숙박", "일반스포츠", "취미/오락", "요가/단전/마사지"],
+      "의료/건강": ["수의업", "의약/의료품", "일반병원", "특화병원", "종합병원"],
+      "전자상거래": ["인터넷쇼핑", "음식배달서비스"]
+    };
+
+    function showOptions() {
+      const sex = document.getElementById("sex").value;
+      const age = document.getElementById("age").value;
+      const resultDiv = document.getElementById("resultContainer");
+
+      resultDiv.innerHTML = ""; 
+
+      let recommendedItems = [];
+
+      if (age === "20s" && sex === "F") {
+        recommendedItems = ["소매/유통", "식사", "디저트", "의료/건강", "생활서비스"];
+      } else if (age === "20s" && sex === "M") {
+        recommendedItems = ["소매/유통", "식사", "여가/오락", "디저트", "생활서비스"];
+      } else if (age === "30s" && sex === "F") {
+        recommendedItems = ["소매/유통", "식사", "의료/건강", "생활서비스", "디저트"];
+      } else if (age === "30s" && sex === "M") {
+        recommendedItems = ["소매/유통" , "식사", "생활서비스", "의료/건강", "여가/오락"];
+      } else if (age === "40s" && sex === "F") {
+        recommendedItems = ["소매/유통", "의료/건강", "식사", "생활서비스", "디저트"];
+      } else if (age === "40s" && sex === "M") {
+        recommendedItems = ["소매/유통", "식사", "생활서비스", "의료/건강", "디저트"];
+      } else if (age === "50s" && sex === "F") {
+        recommendedItems = ["소매/유통", "의료/건강", "식사", "생활서비스", "디저트"];
+      } else if (age === "50s" && sex === "M") {
+        recommendedItems = ["소매/유통", "의료/건강", "식사", "생활서비스", "디저트"];
+      } else if (age === "60s" && sex === "F") {
+        recommendedItems = ["소매/유통", "의료/건강", "식사", "생활서비스", "디저트"];
+      } else if (age === "60s" && sex === "M") {
+        recommendedItems = ["소매/유통", "의료/건강", "식사", "생활서비스", "여가/오락"];
+      } else if (age === "70s" && sex === "F") {
+        recommendedItems = ["소매/유통", "의료/건강", "식사", "생활서비스", "디저트"];
+      } else if (age === "70s" && sex === "M") {
+        recommendedItems = ["소매/유통", "의료/건강", "생활서비스", "식사", "여가/오락"];
+      } else if (age === "80s" && sex === "F") {
+        recommendedItems = ["소매/유통", "의료/건강", "식사", "생활서비스", "디저트"];
+      } else if (age === "80s" && sex === "M") {
+        recommendedItems = ["소매/유통", "의료/건강", "생활서비스", "식사", "디저트"];
+      } else if (age === "90s" && sex === "F") {
+        recommendedItems = ["소매/유통", "의료/건강", "식사", "생활서비스", "디저트"];
+      } else if (age === "90s" && sex === "M") {
+        recommendedItems = ["의료/건강", "소매/유통", "식사", "생활서비스" ,"디저트"];
+      }
+
+      const allItems = ["소매/유통", "생활서비스", "여가/오락", "식사", "디저트", "의료/건강", "공연/전시", "전자상거래"];
+
+      // 추천 업종 출력
+      const recTitle = document.createElement("h3");
+      recTitle.textContent = "추천 업종 선택";
+      resultDiv.appendChild(recTitle);
+
+      const recGroup = document.createElement("div");
+      recGroup.className = "checkbox-group";
+      recommendedItems.forEach(item => {
+        const label = document.createElement("label");
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.name = "recommended";
+        checkbox.value = item;
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(" " + item));
+        recGroup.appendChild(label);
+        recGroup.appendChild(document.createElement("br"));
+      });
+      resultDiv.appendChild(recGroup);
+
+      // 전체 업종 출력
+      const allTitle = document.createElement("h3");
+      allTitle.textContent = "전체 업종 선택";
+      resultDiv.appendChild(allTitle);
+
+      const allGroup = document.createElement("div");
+      allGroup.className = "checkbox-group";
+      allItems.forEach(item => {
+        const label = document.createElement("label");
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.name = "allCategory";
+        checkbox.value = item;
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(" " + item));
+        allGroup.appendChild(label);
+        allGroup.appendChild(document.createElement("br"));
+      });
+      resultDiv.appendChild(allGroup);
+
+      // 소분류 출력
+      const showSubCategories = () => {
+        const selectedRecommended = Array.from(document.querySelectorAll('input[name="recommended"]:checked')).map(el => el.value);
+        const selectedAll = Array.from(document.querySelectorAll('input[name="allCategory"]:checked')).map(el => el.value);
+
+        const selectedSet = new Set([...selectedRecommended, ...selectedAll]);
+        const subDiv = document.createElement("div");
+        subDiv.className = "dynamic-content";
+
+        const subTitle = document.createElement("h3");
+        subTitle.textContent = "소분류 선택";
+        subDiv.appendChild(subTitle);
+
+        selectedSet.forEach(category => {
+          if (subCategoryMap[category]) {
+            const groupLabel = document.createElement("strong");
+            groupLabel.textContent = category;
+            subDiv.appendChild(groupLabel);
+            subDiv.appendChild(document.createElement("br"));
+
+            subCategoryMap[category].forEach(sub => {
+              const label = document.createElement("label");
+              const checkbox = document.createElement("input");
+              checkbox.type = "checkbox";
+              checkbox.name = "subcategory";
+              checkbox.value = sub;
+              label.appendChild(checkbox);
+              label.appendChild(document.createTextNode(" " + sub));
+              subDiv.appendChild(label);
+              subDiv.appendChild(document.createElement("br"));
+            });
+
+            subDiv.appendChild(document.createElement("br"));
+          }
+        });
+
+        resultDiv.appendChild(subDiv);
+      };
+
+      // 버튼 추가
+      const subBtn = document.createElement("input");
+      subBtn.type = "button";
+      subBtn.value = "소분류 검색";
+      subBtn.onclick = showSubCategories;
+      resultDiv.appendChild(subBtn);
+    }
+  </script>
+</body>
+</html>
